@@ -1,3 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+:root{
+    --light: #f2f2f2;
+    --dark: #273c55;
+    --white: white;
+    --font-white: white;
+}
+
+.dark-mode{
+    --light: #273c55;
+    --dark: #f2f2f2;
+    --white: #3a5677;
+    --font-white: #273c55;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body{
+    background-color: var(--light);
+}
+
+.header-container{
+    width: 100%;
+    max-height: 200px;
+    height: 80%;
+    background-color: var(--dark);
+    text-align: center;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.125);
+}
+
+.header-container img{
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    left: 40px;
+    top: -5px;
+}
+
+.title{
+    padding: 10px 0 10px 0;
+    font-size: 58px;
+    text-transform: uppercase;
+    color: var(--light);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.125);
+    user-select: none;
+    letter-spacing: 5px;
+}
+
+.container{
+    width: 100%;
+}
+
+.register-container{
+    max-width: 400px;
+    width: 100%;
+    background: var(--white);
+    padding: 30px;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.125);
+    position: absolute;
+    left: 50px;
+    top: 170px;
+}
+
+.register-container .register-title{
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: var(--dark);
+    text-transform: uppercase;
+    text-align: center;
+    user-select: none;
+}
+
+.register-container .form{
+    width: 100%;
+}
+
+.register-container .form .register-field{
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.register-container .form .register-field label{
+    width: 150px;
+    color: var(--dark);
+    margin: 0 10px 10px 0;
+    font-size: 14px;
+    user-select: none;
+}
+
+.register-container .form .register-field .register-label-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    user-select: none;
+}
+
+.register-container .form .register-field .register-input{
+    width: 379px;
+    outline: none;
+    border: 1px solid #d5dbd9;
+    font-size: 15px;
+    padding: 8px 10px;
+    border-radius: 3px;
+    transition: all 0.3 ease;
+    color: #757575;
+}
+
+.register-container .form .register-field .custom-select{
+    position: relative;
+    width: 100%;
+    height: 37px;
+}
+
+.register-container .form .register-field .custom-select select{
+    position: relative;
+    width: 399px;
+    height: 37px;
+    appearance: none;
+    border: 1px solid #d5dbd9;
+    color: #757575;
+    height: 100%;
+    padding: 8px 10px;
+    border-radius: 3px;
+    outline: none;
+}
+
+.register-container .form .register-field .custom-select:before{
+    content: "";
+    position: absolute;
+    top: 12px;
+    right: 10px;
+    border: 8px solid;
+    border-color: var(--dark) transparent transparent transparent;
+}
+
+.register-container .form .register-field .register-input:focus,
+.register-container .form .register-field .custom-select select:focus{
+    border: 1px solid var(--dark);
+}
+
+.register-container .form .register-field .register-btn{
+    width: 50%;
+    padding: 8px 10px;
+    font-size: 15px;
+    border: 0;
+    background: var(--dark);
+    color: var(--font-white);
+    cursor: pointer;
+    border-radius: 3px;
+    margin: 20px 0 0 25%;
+}
+
+.register-container .form .register-field:last-child{
+    margin-bottom: 0;
+}
+
+.register-container .form .register-field .register-btn:hover{
+    background: #d9d9d9;
+    color: rgb(54, 53, 53);
+}
+
+.register-container .form .register-field.success .register-input,
+.register-container .form .register-field.success select{
+    border-color: #00ff00;
+}
+
+.register-container .form .register-field.error .register-input,
+.register-container .form .register-field.error select{
+    border-color: #ff3860;
+}
+
+.register-container .form .register-field .error {
+    margin-top: 10px;
+    color: #ff3860;
+    font-size: 14px;
+    height: 13px;
+}
+
 .search-container{
     width: 400px;
     height: 50px;
@@ -87,7 +271,3 @@
     border-radius: 30px;
     cursor: pointer;
 }
-
-
-
-

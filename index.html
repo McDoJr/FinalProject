@@ -108,5 +108,227 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        const form = document.querySelector('#form');
+        const firstname = document.querySelector('#firstname');
+        const lastname = document.querySelector('#lastname');
+        const email = document.querySelector('#email');
+        const gender = document.querySelector('#gender');
+        const age = document.querySelector('#age');
+        const course = document.querySelector('#course');
+        const tbody = document.querySelector('#tbody');
+        const toggle = document.querySelector('.toggle-container');
+        const elements = [firstname, lastname, email, gender, age, course];
+        const theme = localStorage.getItem('theme');
+        let id;
+        
+        if(theme){
+            document.body.classList.add(theme);
+            toggle.style.justifyContent = 'flex-end';
+        }
+        
+        const isValidInput = element => {
+            return (element.parentElement.classList.contains('error') || !element.parentElement.classList.contains('success')) && element.value !== '';
+        }
+
+        const isSelectElement = element => {
+            return element === gender || element === course;
+        }
+
+        const setError = (element, message) => {
+            const field = element.parentElement;
+            const error = field.querySelector('.error');
+
+            error.innerText = message;
+            field.classList.add('error');
+            field.classList.remove('success');
+        }
+
+        const setSuccess = element => {
+            let field = element.parentElement;
+            let error = field.querySelector('.error');
+            
+            if(element === gender || element === course){
+                field = field.parentElement;
+                error = field.querySelector('.error');
+            }
+
+            error.innerText = '';
+            field.classList.add('success');
+            field.classList.remove('error');
+        }
+
+        const clearField = element => {
+            let field = element.parentElement;
+            if (element === gender || element === course){
+                field = field.parentElement;
+            }
+            field.classList.remove('success');
+            field.classList.remove('error');
+        }
+
+        const isValidEmail = email => {
+            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+
+        const getEventType = element => {
+            return isSelectElement(element) ? 'change' : 'input';
+        }
+
+        const validate = () => {
+            for(let element of elements){
+                const value = element.value.trim();
+
+                if(value === ''){
+                    setError(element, 'Required field!')
+                    return false;
+                }
+
+                if(element === email){
+                    if(!isValidEmail(value)){
+                        setError(element, 'Provide a valid email address!')
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        for(let element of [firstname, lastname, email, age]){
+            const field = element.parentElement;
+            element.addEventListener('input', (e) =>{
+                if(isValidInput(element)){
+                    if(element === email && isValidEmail(element.value.trim())){
+                        setSuccess(element);
+                    }else if(element !== email){
+                        setSuccess(element);
+                    }
+                }
+            });
+        }
+        
+        for(let element of [gender, course]){
+            const field = element.parentElement;
+            element.addEventListener('change', (e) =>{
+                if(isValidInput(element)){
+                    setSuccess(element);
+                }
+            })
+        }
+
+        const clearChild = parent =>{
+            while (parent.lastChild){
+                parent.removeChild(parent.lastChild);
+            }
+        }
+        const get = (choice, search) =>{
+            let id = document.querySelector('#id');
+            var formData =  $("#id").serializeArray();
+            var finalData = formData;
+            console.log(id.value);
+            let finalUrl = 'http://172.17.100.12:8081/bejerano/cgi-bin/' + (choice ? 'get.o' : 'delete.o');
+            $.ajax({
+                url: finalUrl,
+                type:'POST',
+                data: JSON.stringify(finalData),
+                contentType:'application/json',
+                dataType:'json',
+                success: function(response) {
+                    if (response.status === "success") {
+
+                        const tbody = document.querySelector('#tbody');
+
+                        clearChild(tbody);
+
+                        for(let data of response.data){
+                            let row = document.createElement('tr');
+                            let results = [data.id, data.firstname, data.lastname, data.email, data.gender, data.age, data.course]
+                            for(let result of results){
+                                let td = document.createElement('td');
+                                td.innerHTML = result;
+                                row.appendChild(td);
+                            }
+                            tbody.appendChild(row);
+                        }
+                        $('input[type="text"]').val('');
+                        if(!choice){
+                            get(true)
+                        }
+                    }else if(response.status === "error") {
+                        console.log(response.message)
+                          console.log(response.message_additional)                                 
+                    }               
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+        toggle.addEventListener('click', (e) =>{
+            e.preventDefault();
+            document.body.classList.toggle('dark-mode');
+            if(document.body.classList.contains('dark-mode')){
+                localStorage.setItem('theme', 'dark-mode');
+                toggle.style.justifyContent = 'flex-end';
+            }else{
+                localStorage.removeItem('theme');
+                toggle.style.justifyContent = 'flex-start';
+            }
+        });
+        get(true);
+        $(document).ready(function(){
+            $('input[type="text"]').val('');
+
+            $("#register").click( function(event) {
+                event.preventDefault();
+                
+                if(!validate()){
+                    return;
+                }
+                
+                var formData =  $("#form").serializeArray();
+                
+                $.ajax({
+                    url: 'http://172.17.100.12:8081/bejerano/cgi-bin/post.o',
+                    type:'POST',
+                    data: JSON.stringify(formData),
+                    contentType:'application/json',
+                    dataType:'json',
+                    success: function(response) {
+                        if (response.status === "success") {
+                            console.log(response.message)
+                            console.log(response.data)
+
+                            $('input[type="text"]').val('');
+                            $('select').val('Select');
+                            $('input[type="number"]').val('');
+                            elements.forEach(element => {
+                                clearField(element);
+                            })
+                            get(true);
+
+                        }  else if (response.status === "error") {
+                            console.log(response.message)
+                            console.log(response.message_additional)
+                        }
+                  },
+                  error: function(xhr, status, error) {
+                      console.log(xhr.responseText);
+                  }
+                });
+            });
+            
+            $('#search-btn').click( function(event) {
+                event.preventDefault();
+                get(true);
+            });
+
+            $('#delete-btn').click( function(event) {
+                event.preventDefault();
+                get(false);
+            });
+        });
+    </script>
 </body>
 </html>

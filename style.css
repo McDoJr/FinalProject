@@ -88,6 +88,10 @@
     cursor: pointer;
 }
 
-
-
-
+.register-container .form .register-field .error {
+    margin-top: 10px;
+    color: #ff3860;
+    font-size: 14px;
+    height: 13px;
+    display: flex;
+}

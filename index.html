@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="design.css">
     <title>Enrollment Form</title>
 </head>
 <body>
@@ -59,6 +59,21 @@
                 </div>
                 <div class="register-field">
                     <div class="register-label-container">
+                        <label>Year</label>
+                        <div class="error"></div>
+                    </div>
+                    <div class="custom-select">
+                        <select id="year" name="year">
+                            <option value="">Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="register-field">
+                    <div class="register-label-container">
                         <label>Course</label>
                         <div class="error"></div>
                     </div>
@@ -93,6 +108,7 @@
                         <th>Email</th>
                         <th>Gender</th>
                         <th>Age</th>
+                        <th>Year</th>
                         <th>Course</th>
                     </tr>
                 </thead>
@@ -115,6 +131,7 @@
         const email = document.querySelector('#email');
         const gender = document.querySelector('#gender');
         const age = document.querySelector('#age');
+        const year = document.querySelector('#year')
         const course = document.querySelector('#course');
         const tbody = document.querySelector('#tbody');
         const toggle = document.querySelector('.toggle-container');
@@ -132,7 +149,7 @@
         }
 
         const isSelectElement = element => {
-            return element === gender || element === course;
+            return element === gender || element === course || element === year;
         }
 
         const setError = (element, message) => {
@@ -208,7 +225,7 @@
             });
         }
         
-        for(let element of [gender, course]){
+        for(let element of [gender, year, course]){
             const field = element.parentElement;
             element.addEventListener('change', (e) =>{
                 if(isValidInput(element)){
@@ -243,7 +260,7 @@
 
                         for(let data of response.data){
                             let row = document.createElement('tr');
-                            let results = [data.id, data.firstname, data.lastname, data.email, data.gender, data.age, data.course]
+                            let results = [data.id, data.firstname, data.lastname, data.email, data.gender, data.age, data.year, data.course]
                             for(let result of results){
                                 let td = document.createElement('td');
                                 td.innerHTML = result;

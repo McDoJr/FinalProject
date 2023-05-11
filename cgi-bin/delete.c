@@ -105,7 +105,8 @@ int main() {
             json_object_set_new(object, "email", json_string((const char*)sqlite3_column_text(stmt, 3)));
             json_object_set_new(object, "gender", json_string((const char*)sqlite3_column_text(stmt, 4)));
             json_object_set_new(object, "age", json_integer(sqlite3_column_int(stmt, 5)));
-            json_object_set_new(object, "course", json_string((const char*)sqlite3_column_text(stmt, 6)));
+            json_object_set_new(object, "year", json_integer(sqlite3_column_int(stmt, 6)));
+            json_object_set_new(object, "course", json_string((const char*)sqlite3_column_text(stmt, 7)));
            
 
             // add the JSON object to the JSON array

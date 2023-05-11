@@ -17,6 +17,7 @@ typedef struct {
     char* email;
     char* gender;
     char* age;
+    char* year;
     char* course;
 }Report;
 
@@ -35,6 +36,7 @@ void create_json_array(Report info) {
     json_object_set_new(obj, "email", json_string(info.email));
     json_object_set_new(obj, "gender", json_string(info.gender));
     json_object_set_new(obj, "age", json_string(info.age));
+    json_object_set_new(obj, "year", json_string(info.year));
     json_object_set_new(obj, "course", json_string(info.course));
 
     json_array_append_new(arr, obj);
@@ -83,8 +85,8 @@ void loadJSON(Report *info) {
         create_json_error_responses(error.text,NULL);
     }
 
-    const char* properties[] = { "id", "firstname", "lastname", "email", "gender", "age", "course" };
-    char** infovar[] = {&info->id,&info->firstname,&info->lastname,&info->email,&info->gender,&info->age,&info->course};
+    const char* properties[] = { "id", "firstname", "lastname", "email", "gender", "age", "year", "course" };
+    char** infovar[] = {&info->id,&info->firstname,&info->lastname,&info->email,&info->gender,&info->age,&info->year,&info->course};
     //calculates the number of elements
     int num_properties = sizeof(properties) / sizeof(properties[0]); 
   
@@ -119,7 +121,7 @@ int main(void) {
    sqlite3_stmt *stmt;
    int dbres;
 
-   const char *sql_statement = "insert into students values(?,?,?,?,?,?,?);";
+   const char *sql_statement = "insert into students values(?,?,?,?,?,?,?,?);";
 
 
    // function call
@@ -144,7 +146,8 @@ int main(void) {
     dbres |= sqlite3_bind_text(stmt, 4, info.email, -1, SQLITE_TRANSIENT);
     dbres |= sqlite3_bind_text(stmt, 5, info.gender, -1, SQLITE_TRANSIENT);
     dbres |= sqlite3_bind_text(stmt, 6, info.age, -1, SQLITE_TRANSIENT);
-    dbres |= sqlite3_bind_text(stmt, 7, info.course, -1, SQLITE_TRANSIENT);
+    dbres |= sqlite3_bind_text(stmt, 7, info.year, -1, SQLITE_TRANSIENT);
+    dbres |= sqlite3_bind_text(stmt, 8, info.course, -1, SQLITE_TRANSIENT);
    
    
     if (dbres != SQLITE_OK) {    
